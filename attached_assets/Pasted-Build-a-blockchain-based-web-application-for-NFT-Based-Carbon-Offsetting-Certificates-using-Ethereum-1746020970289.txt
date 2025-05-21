@@ -1,0 +1,117 @@
+Build a blockchain-based web application for NFT-Based Carbon Offsetting Certificates using Ethereum, React, Tailwind CSS, and OpenZeppelin smart contracts. The app should follow the user flow and requirements below, with all code hosted in a Replit project. Use modern JavaScript, ethers.js for blockchain interaction, and deploy the smart contract on the Sepolia testnet. Ensure the app is responsive and styled with Tailwind CSS.
+
+### Project Overview
+The app facilitates carbon offset certificate trading as NFTs with three user roles:
+1. **Carbon Producer**: Submits offset claims, receives NFT certificates.
+2. **Carbon Offset Buyer**: Browses and purchases NFTs, views certificates.
+3. **Administrator**: Reviews and approves/rejects claims.
+
+### User Flow
+1. **Carbon Producer**:
+   - Connects MetaMask wallet to register/login.
+   - Submits offset claim (CO2 tons, project name, description, PDF documentation).
+   - Receives notification of claim status.
+   - Gets NFT certificate in wallet upon approval.
+2. **Carbon Offset Buyer**:
+   - Connects MetaMask wallet to register/login.
+   - Browses NFT marketplace.
+   - Purchases offset NFTs with ETH.
+   - Views owned certificates.
+3. **Administrator**:
+   - Connects MetaMask wallet to login (admin address configured in smart contract).
+   - Reviews claim submissions and documentation.
+   - Approves/rejects claims, triggering NFT minting for approved claims.
+
+### Technical Requirements
+1. **Frontend**:
+   - Use React with React Router for navigation.
+   - Style with Tailwind CSS via CDN.
+   - Integrate MetaMask for wallet authentication using ethers.js.
+   - Homepage with three buttons (Producer, Buyer, Admin) styled distinctly (e.g., green for Producer, blue for Buyer, red for Admin).
+   - Each button links to the respective portal after wallet connection.
+   - Implement the following pages:
+     - **Producer Dashboard**:
+       - Displays connected wallet address.
+       - Navigation to Offset Submission page and (placeholder) Claim Status page.
+     - **Offset Submission Page**:
+       - Form with fields: CO2 Offset (tons, numeric), Project Name (text), Project Description (textarea), Documentation (PDF file upload).
+       - Uploads PDF to IPFS (use Pinata or mock with a dummy hash if no API key).
+       - Submits claim to smart contract, showing success/error messages.
+       - Back button to dashboard.
+     - **Buyer Marketplace**:
+       - Lists available NFTs with details (CO2 offset, project name, price).
+       - Allows purchasing with ETH.
+       - Displays owned NFTs.
+     - **Admin Panel**:
+       - Lists pending claims with details and IPFS documentation links.
+       - Buttons to approve/reject claims, interacting with smart contract.
+     - **Profile/Dashboard**:
+       - Shows wallet address and role-specific options (e.g., claims for Producer, NFTs for Buyer).
+
+2. **Smart Contract**:
+   - Use Solidity with OpenZeppelin ERC-721 for NFT certificates.
+   - Deploy on Sepolia testnet.
+   - Features:
+     - `submitClaim(co2Offset, ipfsHash)`: Producer submits claim with CO2 tons and IPFS hash.
+     - `approveClaim(claimId, tokenURI)`: Admin mints NFT to producer with IPFS metadata URI.
+     - `rejectClaim(claimId)`: Admin rejects claim.
+     - Store claims with attributes: producer address, CO2 offset, IPFS documentation hash, approval status.
+     - Emit events for claim submission, approval, rejection.
+     - Basic marketplace functionality (e.g., list NFT for sale, buy with ETH).
+   - Use OpenZeppelin’s `Ownable` for admin access control (admin is contract owner).
+   - Store NFT metadata on IPFS with attributes: CO2 offset, project name, description, documentation hash.
+
+3. **Backend**:
+   - Minimal backend: Store claim metadata and IPFS hashes on-chain via smart contract events.
+   - Use IPFS (Pinata or similar) for documentation and NFT metadata storage.
+   - Mock IPFS upload with dummy hashes if no Pinata API key is provided.
+   - Optionally, suggest a Node.js backend with Firebase for off-chain claim storage if needed.
+
+4. **Wallet Integration**:
+   - Use MetaMask for authentication and transactions.
+   - On wallet connection, redirect to user’s dashboard based on role (e.g., admin address for Admin portal).
+   - Handle wallet disconnection and errors gracefully.
+
+### Project Structure
+- `index.html`: Entry point with React app, Tailwind CSS, ethers.js, and React Router CDNs.
+- `src/App.jsx`: Main app with wallet connection and routing.
+- `src/components/`: Components for Homepage, ProducerDashboard, OffsetSubmission, BuyerMarketplace, AdminPanel.
+- `contracts/CarbonOffsetNFT.sol`: ERC-721 smart contract.
+- `scripts/deploy.js`: Hardhat script to deploy contract on Sepolia.
+- `.env`: Store Sepolia RPC URL and private key (not committed).
+
+### Additional Requirements
+- **Security**:
+   - Validate form inputs (e.g., positive CO2 offset, PDF file type).
+   - Use OpenZeppelin’s secure contracts to prevent reentr=data-cy attacks.
+   - Handle MetaMask errors (e.g., wrong network, insufficient funds).
+- **Testing**:
+   - Test wallet connection, claim submission, approval, and NFT minting on Sepolia.
+   - Ensure responsive UI across devices.
+- **Deployment**:
+   - Host frontend on Replit’s web server.
+   - Deploy smart contract on Sepolia and update frontend with contract address.
+- **Assumptions**:
+   - Ethereum Sepolia testnet for development.
+   - Mock IPFS with dummy hashes unless Pinata API key provided.
+   - Fixed NFT pricing in marketplace (configurable by admin).
+   - Admin is contract owner (single address).
+   - NFT metadata includes CO2 offset, project name, description, and IPFS documentation hash.
+
+### Deliverables
+- A fully functional Replit project with:
+  - Frontend React app with all pages and wallet integration.
+  - Deployed ERC-721 smart contract on Sepolia.
+  - Instructions to run the app and interact with the contract.
+  - Mock IPFS integration (or real Pinata if API key provided).
+- A README.md with:
+  - Setup instructions (e.g., install dependencies, configure .env).
+  - Steps to deploy the contract and run the app.
+  - Notes on testing and extending the app.
+
+### Notes
+- If Pinata API key is unavailable, mock IPFS uploads with dummy hashes and note how to integrate Pinata later.
+- Suggest improvements (e.g., dynamic NFT pricing, visual certificate generation) but prioritize core functionality.
+- Ensure the app is user-friendly, with clear feedback for actions (e.g., transaction pending, claim submitted).
+
+Please create this project in Replit, ensuring all code is organized, commented, and functional. Provide the Replit project URL and any setup instructions once complete.
